@@ -1,23 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
 
 function App() {
+
+  const [repos,setRepos] = useState([{}]);
+ const LoadNewChanges = true ;
+
+useEffect(()=>{
+  async function fetchData(){
+   const response = await fetch('https://api.github.com/users/bilalalam98/repos')
+   const data = await response.json();
+   setRepos(data);
+   console.log(data)
+  }
+  fetchData()
+},[LoadNewChanges])
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <ul>
+       <h1>you are watching all the</h1>
+       {repos.map((repoObj,ind)=>{
+      return(
+        <li key={ind}>{repoObj.name}</li>
+      )
+       })}
+
+     </ul>
     </div>
   );
 }
